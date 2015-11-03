@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h1>Регистрация</h1>
+<h2>
+    {% if incorrect_login %}
+            <label class="error">{{ incorrect_login }}</label>
+    {% endif %}
+    {% if incorrect_password %}
+            <label class="error">{{ incorrect_password }}</label>
+    {% endif %}
+    {% if mismatch_passwords %}
+            <label class="error">{{ mismatch_passwords }}</label>
+    {% endif %}
+    {% if non_unique_login %}
+            <label class="error">{{ non_unique_login }}</label>
+    {% endif %}
+</h2>
+{% block registration %}
+<div class = "input block" align = center>
+    <form action="{%  url 'registration' %}" method="POST">
+        {% csrf_token %}
+        <b>Логин*:  </b><input type = "text" id="username" name="username"><br>
+        <b>Пароль*:  </b><input type = "text" id="password1"  name="password1"><br>
+        <b>Подтверждение пароля*:  </b><input type="text" id="password2" name="password2"><br>
+        <b><button type="submit">Зарегистрироваться</button></b>
+    </form>
+</div>
+{% endblock %}
+
+</body>
+</html>
