@@ -14,7 +14,7 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return redirect('/')                                                                                        #на главную
+            return redirect('main')
         else:
             args['login_error'] = 'Неверный пароль и/или логин'
             return render_to_response('login/login.html', args)
