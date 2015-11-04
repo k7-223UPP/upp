@@ -1,24 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Авторизация</title>
-</head>
-{% if success_registration %}
+{% extends 'menu/base.html' %}
+
+{% block title %}
+Авторизация
+{%  endblock %}
+
+{%  block content %}
+    {% if success_registration %}
             <div class="error">{{ success_registration }}</div>
-    {% endif %}
-{% block login %}
-    <div class="large-offset-3 large-6 columns">
-    <form action ="{%  url 'login' %}" method="post">
-        {% csrf_token %}
-        <label for="username">Имя пользователя</label>
-        <input type="text" name="username" id="username"><br>
-        <label for="password">Пароль</label>
-        <input type="password" name="password" id="password"><br>
-        <input class="button" type="submit" value="Войти">
-    </form>
-    {% if login_error %}
-            <label class="error">{{ login_error }}</label>
-    {% endif %}
-    </div>
+        {% endif %}
+    {% block login %}
+        <div class="large-offset-3 large-6 columns">
+        <form action ="{%  url 'login' %}" method="post">
+            {% csrf_token %}
+            <label for="username">Имя пользователя</label>
+            <input type="text" name="username" id="username"><br>
+            <label for="password">Пароль</label>
+            <input type="password" name="password" id="password"><br>
+            <input class="button" type="submit" value="Войти">
+        </form>
+        {% if login_error %}
+                <label class="error">{{ login_error }}</label>
+        {% endif %}
+        </div>
+    {% endblock %}
+
 {% endblock %}
