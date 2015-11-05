@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^main/', include('main.urls')),
     url(r'^registration/', include('registration.urls')),
     url(r'^login/', include('login.urls')),
+    #test string here
 ]
