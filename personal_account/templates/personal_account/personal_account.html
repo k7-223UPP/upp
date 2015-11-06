@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет пользователя {{ user.username }}</title>
+    <link rel="import" href="private_data.html">
+</head>
+<body>
+
+    <h1>Личный кабинет пользователя {{ user.username }}</h1>
+    <nav>
+        <div id="inset" align="center">
+            <a href="{% url 'private_data' %}" class="button">Личные данные</a>
+            <a href="#" class="button">_______</a>
+            <a href="#" class="button">_______</a>
+            <a href="#" class="button">_______</a>
+        </div>
+    </nav>
+</body>
+</html>

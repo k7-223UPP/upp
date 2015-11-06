@@ -1,0 +1,53 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+    </title>
+    </head>
+<body>
+<h1>Личные данные</h1>
+<h2>
+    {% if incorrect_login %}
+            <label class="error">{{ incorrect_login }}</label>
+    {% endif %}
+    {% if incorrect_password %}
+            <label class="error">{{ incorrect_password }}</label>
+    {% endif %}
+    {% if mismatch_passwords %}
+            <label class="error">{{ mismatch_passwords }}</label>
+    {% endif %}
+    {% if non_unique_login %}
+            <label class="error">{{ non_unique_login }}</label>
+    {% endif %}
+</h2>
+{% block private_data %}
+<div class = "input block" align = center style="float: left">
+    <form action="{%  url 'private_data' %}" method="POST">
+        {% csrf_token %}
+
+        <div class="field">
+            <label for="n">Логин:</label>
+            <input type="text" id="username" name="username" placeholder="{{ user.username }}">
+        </div>
+        <div class="field">
+            <label for="n">Старый пароль:</label>
+            <input type="text" id="passwordold"  name="passwordold"/>
+        </div>
+        <div class="field">
+            <label for="n">Новый пароль:</label>
+            <input type="text" id="passwordnew1"  name="passwordnew1"/>
+        </div>
+        <div class="field">
+            <label for="n">Подтверждение пароля:</label>
+            <input type="text" id="passwordnew2" name="passwordnew2" />
+        </div>
+        <b><button type="submit">Сохранить</button></b>
+
+    </form>
+</div>
+{% endblock %}
+
+</body>
+</html>
