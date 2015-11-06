@@ -22,6 +22,8 @@
         <option value="$MODULE_DIR$/registration/templates" />
         <option value="$MODULE_DIR$/login/templates" />
         <option value="$MODULE_DIR$/main/templates" />
+        <option value="$MODULE_DIR$/personal_account/templates" />
+        <option value="$MODULE_DIR$/personal_account/private_data/templates" />
       </list>
     </option>
   </component>
