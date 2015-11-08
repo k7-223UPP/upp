@@ -21,6 +21,9 @@
     {% if non_unique_login %}
             <label class="error">{{ non_unique_login }}</label>
     {% endif %}
+    {% if incorrect_login %}
+            <label class="error">{{ incorrect_login }}</label>
+    {% endif %}
 </h2>
 {% block private_data %}
 <div class = "input block" align = center style="float: left">
@@ -29,7 +32,7 @@
 
         <div class="field">
             <label for="n">Логин:</label>
-            <input type="text" id="username" name="username" placeholder="{{ user.username }}">
+            <input type="text" id="username" name="username" placeholder={{user.username}}>
         </div>
         <div class="field">
             <label for="n">Старый пароль:</label>

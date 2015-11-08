@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
+from django.contrib.auth.models import User
 from django.shortcuts import render_to_response, render, redirect
 from django.contrib import auth
 from django.contrib.auth.forms import UserCreationForm
@@ -11,7 +12,6 @@ def personal_account(request):
         return render(request, 'personal_account/personal_account.html')
     else:
         return redirect('main')
-
 
 def private_data(request):
     args = {}
@@ -46,4 +46,4 @@ def private_data(request):
         else:
             args['login_error'] = 'Неверный пароль и/или логин'
     else:
-        return render(request, 'personal_account/private_data.html', args)
+        return render_to_response('personal_account/private_data.html', args)

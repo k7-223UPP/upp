@@ -41,6 +41,8 @@ INSTALLED_APPS = (
     'main',
     'registration',
     'login',
+    'menu',
+    'personal_account'
 
 )
 
