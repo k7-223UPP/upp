@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<task>
+    <title>
+        A + B
+    </title>
+    <memory_limit>
+        512
+    </memory_limit>
+    <time_limit>
+        1
+    </time_limit>
+    <text>
+        Найдите сумму чисел A и B.
+    </text>
+    <input_format>
+        Входной файл содержит два числа A и B (1 &lt;= A, B &lt;= 10 ^ 9), разделенные одним пробелом.
+    </input_format>
+    <output_format>
+        Выходной файл должен содержать одно число A + B.
+    </output_format>
+    <first_test_note>
+        Примечание к тесту 1
+    </first_test_note>
+    <second_test_note>
+        Примечание к тесту 2
+    </second_test_note>
+    <text_note>
+        Примечание к условию задачи
+    </text_note>
+</task>
