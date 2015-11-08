@@ -42,7 +42,8 @@ INSTALLED_APPS = (
     'registration',
     'login',
     'menu',
-    'personal_account'
+    'personal_account',
+    'sectionlist'
 
 )
 

@@ -5,6 +5,7 @@
 {%  endblock %}
 
 {%  block content %}
+    <h1>Авторизация</h1>
     {% if success_registration %}
             <div class="error">{{ success_registration }}</div>
         {% endif %}
@@ -12,9 +13,9 @@
         <div class="large-offset-3 large-6 columns">
         <form action ="{%  url 'login' %}" method="post">
             {% csrf_token %}
-            <label for="username">Имя пользователя</label>
+            <label for="username">Логин:</label>
             <input type="text" name="username" id="username"><br>
-            <label for="password">Пароль</label>
+            <label for="password">Пароль:</label>
             <input type="password" name="password" id="password"><br>
             <input class="button" type="submit" value="Войти">
         </form>
