@@ -1,14 +1,14 @@
 {% extends 'menu/base.html' %}
 {% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Личный кабинет пользователя {{ user.username }}</title>
-    <link rel="import" href="private_data.html">
-</head>
-<body>
 
+
+{#    <link rel="import" href="private_data.html">#}
+
+{% block title %}
+Личный кабинет пользователя {{ user.username }}
+{% endblock %}
+{%  block content %}
+    <link rel="import" href="private_data.html">
     <h1>Личный кабинет пользователя {{ user.username }}</h1>
     <nav>
         <div id="inset" align="center">
@@ -20,3 +20,5 @@
     </nav>
 </body>
 </html>
+
+{% endblock %}

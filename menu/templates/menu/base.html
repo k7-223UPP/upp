@@ -40,9 +40,9 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
            <ul class="nav navbar-nav">
-            <li><a href="{% url 'sectionlist' %}">Список разделов</a></li>
+            <li><a href="#">Список разделов</a></li>
           {% if request.user.is_authenticated %}
-            <li><a href="#">Личный кабинет</a></li>
+            <li><a href="{% url 'personal_account' %}">Личный кабинет</a></li>
           {% else %}
                 <li><a href="{% url 'registration' %}">Регистрация</a></li>
                 <li><a href="{% url 'login' %}">Авторизация</a></li>

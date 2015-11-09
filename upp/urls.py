@@ -17,12 +17,10 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^sectionlist/', include('sectionlist.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^main/', include('main.urls')),
     url(r'^registration/', include('registration.urls')),
     url(r'^login/', include('login.urls')),
-    url(r'^personal_account/', include('personal_account.urls')),
+    url(r'^personal_account/', include('personal_account.urls'))
 
-       #test string here
 ]
