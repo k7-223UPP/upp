@@ -1,0 +1,6 @@
+a.link_a + p {
+    display: none;
+}
+a.link_a:hover + p {
+    display: block;
+}

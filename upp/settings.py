@@ -43,6 +43,8 @@ INSTALLED_APPS = (
     'login',
     'menu',
     'personal_account',
+    'sectionlist',
+    'section_page',
 
 
 )

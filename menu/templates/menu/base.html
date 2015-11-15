@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,9 +7,11 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>{% block title %} {% endblock %} &ndash; SRAM</title>
 
+    {% block head %}
+
+    {% endblock %}
     <!-- Bootstrap core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly/bootstrap.min.css" rel="stylesheet">
 
@@ -40,9 +41,10 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
            <ul class="nav navbar-nav">
-            <li><a href="#">Список разделов</a></li>
+            <li><a href="{% url 'sectionlist' %}">Список разделов</a></li>
           {% if request.user.is_authenticated %}
-            <li><a href="{% url 'personal_account' %}">Личный кабинет</a></li>
+            <li><a href="{% url 'private_data' %}">Личный кабинет</a></li>
+            <li><a href="{% url 'logout' %}">Выход</a></li>
           {% else %}
                 <li><a href="{% url 'registration' %}">Регистрация</a></li>
                 <li><a href="{% url 'login' %}">Авторизация</a></li>

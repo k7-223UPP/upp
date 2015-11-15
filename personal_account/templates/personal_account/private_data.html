@@ -1,56 +1,82 @@
+{% extends 'menu/base.html' %}
+
 {% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>
-    </title>
-    </head>
-<body>
-<h1>Личные данные</h1>
-<h2>
-    {% if incorrect_login %}
-            <label class="error">{{ incorrect_login }}</label>
-    {% endif %}
-    {% if incorrect_password %}
-            <label class="error">{{ incorrect_password }}</label>
-    {% endif %}
-    {% if mismatch_passwords %}
-            <label class="error">{{ mismatch_passwords }}</label>
-    {% endif %}
-    {% if non_unique_login %}
-            <label class="error">{{ non_unique_login }}</label>
-    {% endif %}
-    {% if incorrect_login %}
-            <label class="error">{{ incorrect_login }}</label>
-    {% endif %}
-</h2>
-{% block private_data %}
-<div class = "input block" align = center style="float: left">
-    <form action="{%  url 'private_data' %}" method="POST">
-        {% csrf_token %}
-
-        <div class="field">
-            <label for="n">Логин:</label>
-            <input type="text" id="username" name="username" placeholder={{user.username}}>
-        </div>
-        <div class="field">
-            <label for="n">Старый пароль:</label>
-            <input type="text" id="passwordold"  name="passwordold"/>
-        </div>
-        <div class="field">
-            <label for="n">Новый пароль:</label>
-            <input type="text" id="passwordnew1"  name="passwordnew1"/>
-        </div>
-        <div class="field">
-            <label for="n">Подтверждение пароля:</label>
-            <input type="text" id="passwordnew2" name="passwordnew2" />
-        </div>
-        <b><button type="submit">Сохранить</button></b>
-
-    </form>
-</div>
+{% block title %}
+Личные данные
 {% endblock %}
 
-</body>
-</html>
+{% block content %}
+    <link rel="import" href="private_data.html">
+    <h1>Личный кабинет пользователя {{ user.username }}</h1>
+    <nav class="navbar col-md-8 col-md-offset-2 " style="background-color: #f7e1b5;">
+        <div id="navbar" class="collapse navbar-collapse" align="center">
+            <a href="{% url 'private_data' %}" class="btn active">Личные данные</a>
+            <a href="{% url 'process' %}" class="btn">Yet to come</a>
+            <a href="{% url 'process' %}" class="btn">Yet to come</a>
+            <a href="{% url 'process' %}" class="btn">Yet to come</a>
+        </div>
+    </nav>
+    <div class="account-container">
+    </div>
+    <br>
+        <div class="col-lg-offset-2 col-md-8 col-sm-8">
+            <h1>Личные данные</h1>
+            <h2>
+                {% if incorrect_login %}
+                        <label class="error">{{ incorrect_login }}</label>
+                {% endif %}
+                {% if incorrect_password %}
+                        <label class="error">{{ incorrect_password }}</label>
+                {% endif %}
+                {% if mismatch_passwords %}
+                        <label class="error">{{ mismatch_passwords }}</label>
+                {% endif %}
+                {% if non_unique_login %}
+                        <label class="error">{{ non_unique_login }}</label>
+                {% endif %}
+                {% if incorrect_login %}
+                        <label class="error">{{ incorrect_login }}</label>
+                {% endif %}
+                {% if incorrect_login %}
+                        <label class="error">{{ oldlogin_equal_newlogin }}</label>
+                {% endif %}
+            {% if password_error %}
+                        <label class="error">{{ password_error }}</label>
+                {% endif %}
+            </h2>
+            {% block private_data %}
+
+
+            <form action="{%  url 'private_data' %}" method="POST">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="username">Логин:</label>
+                    <input class="form-control" type="text" id="username" name="username" placeholder = "{{ request.user.username }}" >
+                </div>
+                <b><button class="btn btn-default" type="submit">Сохранить</button></b>
+            </form>
+            <br>
+
+            <form action="{%  url 'private_data' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="n">Старый пароль:</label>
+                    <input class="form-control" type="password" id="passwordold"  name="passwordold">
+                </div>
+                <div class="form-group">
+                    <label for="n">Новый пароль:</label>
+                    <input class="form-control" type="password" id="passwordnew1"  name="passwordnew1">
+                </div>
+                <div class="form-group">
+                    <label for="n">Подтверждение пароля:</label>
+                    <input class="form-control" type="password" id="passwordnew2" name="passwordnew2">
+                </div>
+                <b><button class="btn btn-default" type="submit" name="ss">Сохранить</button></b>
+
+            </form>
+                <br>
+                <br>
+        </div>
+{% endblock %}
+{% endblock %}

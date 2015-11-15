@@ -10,6 +10,8 @@ from django.template.context_processors import csrf
 
 
 def registration(request):
+    if request.user.is_authenticated():
+        return redirect('access')
     args = {}
     args.update(csrf(request))
     args['form'] = UserCreationForm()

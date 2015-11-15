@@ -21,6 +21,8 @@ urlpatterns = [
     url(r'^main/', include('main.urls')),
     url(r'^registration/', include('registration.urls')),
     url(r'^login/', include('login.urls')),
-    url(r'^personal_account/', include('personal_account.urls'))
+    url(r'^personal_account/', include('personal_account.urls')),
+    url(r'^section_list/', include('sectionlist.urls')),
+    url(r'^section_page/', include('section_page.urls'))
 
 ]
