@@ -1,6 +1,6 @@
-/.idea
-/__pycache__
-/upp/__pycache__
+.idea/
+*.pyc
+__pycache__/*
 /upp/__init__.py
 /upp/wsgi.py
 manage.py

@@ -74,8 +74,8 @@ def get_task_html(task_id):
     text_note = text_note.strip()
 
     task_html = '<h2 align="center">' + title + '</h2>\n'
-    task_html += '<p align="center">Ограничение по времени на тест: ' + memory_limit + ' Мб</p>\n'
-    task_html += '<p align="center">Ограничение по памяти на тест: ' + time_limit + ' с</p>\n'
+    task_html += '<p align="center">Ограничение по времени на тест: ' + time_limit + ' с</p>\n'
+    task_html += '<p align="center">Ограничение по памяти на тест: ' + memory_limit + ' Мб</p>\n'
     task_html += '<p align="center"><b>Условие задачи</b></p>\n'
     task_html += '<p>' + text + '</p>\n'
     task_html += '<b>Формат входных данных:</b>\n'
