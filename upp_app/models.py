@@ -13,6 +13,7 @@ class Task(models.Model):
 class Section(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=1500, default='')
+    short_description = models.CharField(max_length=255, default='')
 
     def __str__(self):
         return self.name

@@ -4,3 +4,7 @@ a.link_a + p {
 a.link_a:hover + p {
     display: block;
 }
+
+.section-task {
+    width:300px;
+}
