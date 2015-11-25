@@ -23,5 +23,31 @@ class TaskInSection(models.Model):
     id_section = models.ForeignKey(Section)
     id_task = models.ForeignKey(Task)
 
+class Submission(models.Model):
+    code_link = models.CharField(max_length=100)
+    id_user = models.ForeignKey(User)
+    id_task = models.ForeignKey(Task)
+    id_section = models.ForeignKey(Section)
+    status = models.CharField(max_length=10)
+
+class Verdict(models.Model):
+    id_submission = models.ForeignKey(Submission)
+    verdict_text = models.CharField(max_length=15)
+
+class UserPickedTask(models.Model):
+    id_section = models.ForeignKey(Section)
+    id_task = models.ForeignKey(Task)
+    id_user = models.ForeignKey(User)
+
+class TestTask(models.Model):
+    name = models.CharField(max_length=50)
+    datalink = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class TestTaskInSection(models.Model):
+    id_section = models.ForeignKey(Section)
+    id_test_task = models.ForeignKey(TestTask)
 
 
