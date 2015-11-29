@@ -22,7 +22,9 @@ def task_page(request, id_section, id_task):
     if request.method == 'POST':
         form = SubmissionDocument(request.POST, request.FILES)
         if form.is_valid():
-            submission_to_save = Submission(id_user=request.user, id_task=id_task, id_section=id_section, status=process.STATUS_WAIT)
+            task_current = get_object_or_404(Task, id=id_task)
+            section_current = get_object_or_404(Section, id=id_section)
+            submission_to_save = Submission(id_user=request.user, id_task=task_current, id_section=section_current, status=process.STATUS_WAIT)
             submission_to_save.save()
             handle_uploaded_file(request.FILES['docfile'], str(submission_to_save.id))
         return redirect('main')
@@ -31,26 +33,49 @@ def task_page(request, id_section, id_task):
     if not request.user.is_authenticated():
         return redirect('access')
     else:
-        if UserPickedTask.Objects.all().filter(id_section=id_section, id_user=User.Objects.all().filter(username=auth.get_user(request))) == None:
-            if Submission.Objects.all().filter(id_section=id_section, id_user=User.Objects.all().filter(username=auth.get_user(request)), id_task=id_task) == None:
+        if not (UserPickedTask.objects.all().filter(id_section=id_section, id_user=request.user.id)):
+            if not (Submission.objects.all().filter(id_section=id_section, id_user=request.user.id, id_task=id_task)):
                 return redirect('access')
             else:
-                tasks = {}
-                for i in id_task:
-                    task = get_object_or_404(Task, id=i.id)
-                    tasks[task_library.task_reader.get_task_html(task.id)] = task_library.task_reader.get_tutorial_html(
-                        task.id)
-                context = {}
-                context['tasks'] = tasks
-                context['section'] = get_object_or_404(Section, id=id_section)
-                return render(request, 'task_page/task_page_close.html')
+                if not (Submission.objects.all().filter(id_section=id_section, id_user=request.user.id, id_task=id_task, status = process.STATUS_READY)):
+                    tasks = {}
+                    for i in id_task:
+                        task = get_object_or_404(Task, id=i)
+                        tasks[task_library.task_reader.get_task_html(task.id)] = task_library.task_reader.get_tutorial_html(
+                            task.id)
+                    context = {}
+                    context['tasks'] = tasks
+                    context['section'] = get_object_or_404(Section, id=id_section)
+                    context['show_tutorial'] = False
+                    context['task_id'] = id_task
+                    form = SubmissionDocument()
+                    context['form'] = form
+                    return render(request, 'task_page/task_page.html')
+                else:
+                    tasks = {}
+                    for i in id_task:
+                        task = get_object_or_404(Task, id=i)
+                        tasks[task_library.task_reader.get_task_html(task.id)] = task_library.task_reader.get_tutorial_html(
+                            task.id)
+                    context = {}
+                    context['tasks'] = tasks
+                    context['section'] = get_object_or_404(Section, id=id_section)
+                    context['show_tutorial'] = True
+                    context['task_id'] = id_task
+                    form = SubmissionDocument()
+                    context['form'] = form
+                    return render(request, 'task_page/task_page.html')
         else:
             tasks = {}
             for i in id_task:
-                task = get_object_or_404(Task, id=i.id)
+                task = get_object_or_404(Task, id=i)
                 tasks[task_library.task_reader.get_task_html(task.id)] = task_library.task_reader.get_tutorial_html(
                     task.id)
             context = {}
             context['tasks'] = tasks
             context['section'] = get_object_or_404(Section, id=id_section)
-            return render(request, 'task_page/task_page_open.html', context)
+            context['show_tutorial'] = False
+            context['task_id'] = id_task
+            form = SubmissionDocument()
+            context['form'] = form
+            return render(request, 'task_page/task_page.html', context)

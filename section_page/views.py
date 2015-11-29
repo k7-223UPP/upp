@@ -43,7 +43,7 @@ def section_page(request, section_id):
                 selected_task = get_object_or_404(Task, id=selected_task_id)
                 userPT = UserPickedTask(id_section = section, id_user = request.user, id_task = selected_task)
                 userPT.save()
-            return redirect('task_page', userPT.id, section_id, userPT.id_user.id, userPT.id_task.id)
+            return redirect('task_page', section_id, userPT.id_task.id)
         else:
             return render(request, 'section_page/section_page.html', context)
     else:

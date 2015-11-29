@@ -23,7 +23,6 @@
 		
 	})
 	</script>
-	<h1>Разделы:</h1>
 	{% for section in sections %}
     <a href ="{% url 'section_page' section.id %}" class="btn btn-success section-task" data-placement="right" rel="popover"  title="{{ section.short_description }}" data-content="Текстовое описание раздела">{{ section.name }}</a><br><br>
 	{% endfor %}

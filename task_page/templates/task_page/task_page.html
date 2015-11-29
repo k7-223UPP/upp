@@ -1,4 +1,27 @@
 {% extends 'menu/base.html' %}
+{% block head %}
+    <style>
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+    </style>
+{% endblock %}
 {% block title %}
     {{ section.name }}
 {% endblock %}
@@ -10,20 +33,32 @@
         {% else %}
         {% endif %}
     {% endif %}
-    <h4>Выбранная задача:</h4>
 {% autoescape off %}
     {% for task, tutorial in tasks.items %}
     {{ task }}
     <br>
+    <h3>Обучающий материал:</h3>
+        {% if show_tutorial %}
+            {{ tutorial }}
+        {% else %}
+            <p>Сначала решите задачу!</p>
+        {% endif %}
+
 {#    {{ tutorial }}#}
     {% endfor %}
  {% endautoescape %}
-    <form action="{% url 'task_page' userPT_ID section_ID user_ID task_ID %}" method="post" enctype="multipart/form-data"> 
+    <form action="{% url 'task_page' section.id task_id %}" method="post" enctype="multipart/form-data" class="form-inline"> 
         {% csrf_token %} 
-        <p>{{ form.non_field_errors }}</p> 
-        <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p> 
-        <p> {{ form.docfile.errors }}  {{ form.docfile }}  </p> 
-        <p><input type="submit" value="Upload" /></p> 
+        <div class="input-group">
+            <span class="input-group-btn">
+                    <span class="btn btn-primary btn-file">
+                        Browse…
+                        {{ form.docfile }}
+                    </span>
+            </span>
+
+        </div>
+        <input type="submit" value="Upload" class="btn btn-primary" />
     </form>
 {% endblock %}
 

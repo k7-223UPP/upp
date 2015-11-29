@@ -2,6 +2,7 @@ from django import forms
 
 class SubmissionDocument(forms.Form):
     docfile = forms.FileField(
-        label='Выберите файл',
-        help_text='max. 64 килобайт'
+        # label='Выберите файл',
+        # help_text='max. 64 килобайт',
+        widget=forms.FileInput(attrs={'class': "form-control"})
     )
