@@ -27,7 +27,6 @@ class TaskInSection(models.Model):
         return 'task=' + str(self.id_task) + '; section=' + str(self.id_section)
 
 class Submission(models.Model):
-    code_link = models.CharField(max_length=100)
     id_user = models.ForeignKey(User)
     id_task = models.ForeignKey(Task)
     id_section = models.ForeignKey(Section)
