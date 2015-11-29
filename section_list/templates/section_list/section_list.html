@@ -1,0 +1,32 @@
+﻿{% extends 'menu/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}
+Список разделов
+{% endblock %}
+
+{% block head %}
+		<link href="{% static 'section_list/bootstrap.min.css' %}" rel="stylesheet">
+		<link href="{% static 'section_list/style.css' %}" rel="stylesheet">
+		<script src="{%  static 'section_list/jquery-1.11.3.min.js' %}" type="text/javascript"></script>
+		<script src="{%  static 'section_list/bootstrap.min.js' %}" type="text/javascript"></script>
+{% endblock %}
+{% block content %}
+	<script>
+	$(function(){
+		$("[rel='tooltip']").tooltip();
+		$("[rel='popover']").popover({
+			trigger: "hover",
+			delay: { show: 0, hide: 10 }
+		});
+		
+	})
+	</script>
+	<h1>Разделы:</h1>
+	{% for section in sections %}
+    <a href ="{% url 'section_page' section.id %}" class="btn btn-success section-task" data-placement="right" rel="popover"  title="{{ section.short_description }}" data-content="Текстовое описание раздела">{{ section.name }}</a><br><br>
+	{% endfor %}
+{% endblock %}
+
+<!-- Еще необходимо подключить шапку, общую для всех страниц -->

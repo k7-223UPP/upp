@@ -4,11 +4,18 @@
 {% endblock %}
 {% block content %}
     <h1 align="center">{{ section.name }}</h1>
-    <!--<form class="form">
-        <div class="text-center" align="center">
-            <button type="submit">Подобрать новую задачу</button>
-        </div>
-    </form> -->
+    {% if user_is_authenticated %}
+        {% if no_tasks %}
+            <h4 align="center">К сожалению, для Вас новых задач нет.</h4>
+        {% else %}
+            <div>
+                <form action ="#" align="center" method="post">
+                    {% csrf_token %}
+                    <input class="btn btn-default" type="submit" value="{{ button_name }}">
+                </form>
+            </div>
+        {% endif %}
+    {% endif %}
     <h4>Описание к разделу:</h4>
     <pre>{{ section.description }}</pre>
     <h4>Эталонные задачи раздела:</h4>
@@ -19,6 +26,4 @@
     {{ tutorial }}
     {% endfor %}
  {% endautoescape %}
-    <!--<h5>Решение эталонной задачи:</h5>
-    <pre>Решение эталонной задачи раздела "{{ section.name }}"</pre> -->
 {% endblock %} 
