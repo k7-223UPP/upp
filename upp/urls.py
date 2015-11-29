@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^registration/', include('registration.urls')),
     url(r'^login/', include('login.urls')),
     url(r'^personal_account/', include('personal_account.urls')),
-    url(r'^section_list/', include('sectionlist.urls')),
+    url(r'^section_list/', include('section_list.urls')),
     url(r'^section_page/', include('section_page.urls')),
     url(r'^task_page/', include('task_page.urls'))
 
