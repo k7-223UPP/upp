@@ -4,3 +4,5 @@ __pycache__/*
 /upp/__init__.py
 /upp/wsgi.py
 manage.py
+/sources/*
+db.sqlite3
