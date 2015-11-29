@@ -1,3 +1,5 @@
+*/.idea/
+*/__pycache__/
 *.pyc
 /upp/__init__.py
 /upp/wsgi.py
@@ -5,4 +7,4 @@ manage.py
 /sources/*
 !/sources/makefile
 db.sqlite3
-*/.DS_Storess
+*/.DS_Stores
