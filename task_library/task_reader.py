@@ -2,8 +2,18 @@
 
 import codecs
 import xml.etree.ElementTree
+import os
+from os import path
 
-BASE_PATH = 'task_base'
+
+TASK_BASE_PATH = 'task_base'
+TESTS = 'tests'
+STATEMENT = 'statement.xml'
+IN_EXTENSION = '.in'
+OUT_EXTENSION = '.out'
+TUTORIAL = 'tutorial'
+TXT_EXTENSION = '.txt'
+
 
 TITLE_TAG = 'title'
 MEMORY_LIMIT_TAG = 'memory_limit'
@@ -13,11 +23,12 @@ INPUT_FORMAT_TAG = 'input_format'
 OUTPUT_FORMAT_TAG = 'output_format'
 FIRST_TEST_NOTE_TAG = 'first_test_note'
 SECOND_TEST_NOTE_TAG = 'second_test_note'
-TEXT_NOTE_TAG = 'text_note' 
+TEXT_NOTE_TAG = 'text_note'
+
 
 def get_tutorial_html(task_id):
-    task_path = BASE_PATH + '/' + str(task_id)
-    tutorial_path = task_path + '/tutorial.txt'
+    task_path = TASK_BASE_PATH + os.sep + str(task_id)
+    tutorial_path = task_path + os.sep + TUTORIAL + TXT_EXTENSION
 
     with open(tutorial_path, 'r', encoding='utf-8') as tutorial_file:
         tutorial_text = tutorial_file.read()
@@ -27,16 +38,63 @@ def get_tutorial_html(task_id):
 
     return tutorial_html
 
+
+def get_task_path(task_id):
+    return TASK_BASE_PATH + os.sep + str(task_id)
+
+
+def get_statement_path(task_id):
+    return get_task_path(task_id) + os.sep + STATEMENT
+
+
+def get_tests_path(task_id):
+    return get_task_path(task_id) + os.sep + TESTS
+
+
+def get_str_test_number(test_number):
+    if test_number < 10:
+        return '00' + str(test_number)
+    if test_number < 100:
+        return '0' + str(test_number)
+    return str(test_number)
+
+
+def get_input_test_path(task_id, test_number):
+    return get_tests_path(task_id) + os.sep + get_str_test_number(test_number) + IN_EXTENSION
+
+
+def get_output_test_path(task_id, test_number):
+    return get_tests_path(task_id) + os.sep + get_str_test_number(test_number) + OUT_EXTENSION
+
+
+def get_statement_xml_tree_root(statement_path):
+    return xml.etree.ElementTree.parse(statement_path).getroot()
+
+
+def get_time_limit(task_id):
+    task_path = get_task_path(task_id)
+    statement_path = get_statement_path(task_id)
+    root = get_statement_xml_tree_root(statement_path)
+    return root.find(TIME_LIMIT_TAG).text
+
+
+def get_memory_limit(task_id):
+    task_path = get_task_path(task_id)
+    statement_path = get_statement_path(task_id)
+    root = get_statement_xml_tree_root(statement_path)
+    return root.find(MEMORY_LIMIT_TAG).text
+
+
 def get_task_html(task_id):
-    task_path = BASE_PATH + '/' + str(task_id)
-    statement_path = task_path + '/statement.xml'
-    tests_path = task_path + '/tests'
-    first_test_input_path = tests_path + '/001.in'
-    first_test_output_path = tests_path + '/001.out'
-    second_test_input_path = tests_path + '/002.in'
-    second_test_output_path = tests_path + '/002.out'
-    
-    root = xml.etree.ElementTree.parse(statement_path).getroot()
+    task_path = get_task_path(task_id)
+    statement_path = get_statement_path(task_id)
+    tests_path = get_tests_path(task_id)
+    first_test_input_path = get_input_test_path(task_id, 1)
+    first_test_output_path = get_output_test_path(task_id, 1)
+    second_test_input_path = get_input_test_path(task_id, 2)
+    second_test_output_path = get_output_test_path(task_id, 2)
+
+    root = get_statement_xml_tree_root(statement_path)
 
     title = root.find(TITLE_TAG).text
     memory_limit = root.find(MEMORY_LIMIT_TAG).text
@@ -124,3 +182,12 @@ def get_task_html(task_id):
         task_html += '<p>' + text_note + '</p>\n'
 
     return task_html
+
+
+def get_tests_count(task_id):
+    MAX_TEST_COUNT = 999
+    test_count = 2
+    while test_count + 1 <= MAX_TEST_COUNT and \
+          os.path.isfile(get_input_test_path(task_id, test_count + 1)):
+        test_count += 1
+    return test_count

@@ -1,0 +1,61 @@
+{% extends 'menu/base.html' %}
+
+{% load staticfiles %}
+{% block title %}
+Личные данные
+{% endblock %}
+
+{% block content %}
+ <link rel="import" href="private_data.html">
+    <h1>Личный кабинет пользователя {{ user.username }}</h1>
+    <nav class="navbar col-md-8 col-md-offset-2 " style="background-color: #f7e1b5;">
+        <div id="navbar" class="collapse navbar-collapse" align="center">
+            <a href="{% url 'private_data' %}" class="btn">Личные данные</a>
+            <a href="{% url 'submissions' %}" class="btn active">Мои посылки</a>
+            <a href="{% url 'process' %}" class="btn">Yet to come</a>
+            <a href="{% url 'process' %}" class="btn">Yet to come</a>
+        </div>
+    </nav>
+    <div class="account-container">
+    </div>
+    <br>
+        <div class="col-lg-offset-2 col-md-8 col-sm-8">
+            <h1>Мои посылки</h1>
+        </div>
+    <div class="col-lg-offset-1 col-md-12 col-sm-12">
+       <table class="table table-bordered">
+           <tr>
+               <th>Посылка</th>
+               <th>Задача</th>
+               <th>Вердикт</th>
+           </tr>
+               {% for contact in contacts %}
+                   <tr>
+                       <td>{{ contact.id }}</td>
+                       <td><a href="{% url 'task_page' contact.id_task contact.id_section_id %}">{{ contact.id_task }}</a></td>
+                       <!--<td>{{ contact.id_task_id }}</td> <br> -->
+                       <td>{{ contact.status }}</td>
+                   </tr>
+               {% endfor %}
+       </table>
+
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">предыдущая</a>
+        {% endif %}
+
+        <!--<span class="current">
+            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+        </span>-->
+
+        {% for number in pages %}
+            <a href="?page={{ number }}">{{ number }}</a>
+        {% endfor %}
+
+
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">следующая</a>
+        {% endif %}
+    </span>
+    </div>
+ {% endblock %}
