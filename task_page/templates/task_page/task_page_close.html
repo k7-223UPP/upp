@@ -1,0 +1,15 @@
+{% extends 'menu/base.html' %}
+{% block title %}
+    {{ section.name }}
+{% endblock %}
+{% block content %}
+    <h1 align="center">{{ section.name }}</h1>
+    <h4>Задача:</h4>
+    {% autoescape off %}
+        {% for task, tutorial in tasks.items %}
+            {{ task }}
+            <br>
+            {{ tutorial }}
+        {% endfor %}
+    {% endautoescape %}
+{% endblock %}

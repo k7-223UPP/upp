@@ -2,5 +2,5 @@ from django.conf.urls import url, patterns
 from . import views
 
 urlpatterns = patterns('',
-    url(r'^(?P<userPT_ID>[0-9]+)/(?P<section_ID>[0-9]+)/(?P<user_ID>[0-9]+)/(?P<task_ID>[0-9]+)/$', views.task_page , name='task_page')
+    url(r'^(?P<id_section>[0-9]+)/(?P<id_task>[0-9]+)/$', views.task_page , name='task_page')
 )
