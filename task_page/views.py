@@ -21,7 +21,7 @@ def task_page(request, userPT_ID, section_ID, user_ID, task_ID):
         form = SubmissionDocument(request.POST, request.FILES)
         if form.is_valid():
             user_p_t = get_object_or_404(UserPickedTask, id=userPT_ID)
-            submission_to_save = Submission(code_link = "look thisID.cpp", id_user = request.user ,id_task = user_p_t.id_task, id_section = user_p_t.id_section ,status = process.STATUS_WAIT)
+            submission_to_save = Submission(id_user = request.user ,id_task = user_p_t.id_task, id_section = user_p_t.id_section ,status = process.STATUS_WAIT)
             submission_to_save.save()
             handle_uploaded_file(request.FILES['docfile'], str(submission_to_save.id))
             return HttpResponseRedirect(reverse('main'))
