@@ -27,13 +27,15 @@
            <tr>
                <th>Посылка</th>
                <th>Задача</th>
+               <th>Статус</th>
                <th>Вердикт</th>
            </tr>
                {% for contact in contacts %}
                    <tr>
                        <td>{{ contact.id }}</td>
-                       <td><a href="{% url 'task_page' contact.id_task_id contact.id_section_id %}">{{ contact.id_task }}</a></td>
+                       <td><a href="{% url 'task_page' contact.id_section_id contact.id_task_id %}">{{ contact.title_task }}</a></td>
                        <td>{{ contact.status }}</td>
+                       <td>{{ contact.verdict }}</td>
                    </tr>
                {% endfor %}
        </table>

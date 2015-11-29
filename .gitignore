@@ -5,7 +5,7 @@
 /upp/wsgi.py
 /sources/*
 !/sources/makefile
-db.sqlite3
+*.sqlite3
 manage.py
 *.DS_Store
 *.swp

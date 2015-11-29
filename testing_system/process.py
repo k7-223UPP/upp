@@ -53,7 +53,7 @@ if __name__ == '__main__':
     if len(sys.argv) != 1:
         print('incorrect usage!')
         print('usage: process base_path')
-        exit(0)
+        sys.exit(0)
 
     base_path = sys.argv[0]
     process(base_path)

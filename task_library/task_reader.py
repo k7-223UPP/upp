@@ -72,17 +72,21 @@ def get_statement_xml_tree_root(statement_path):
 
 
 def get_time_limit(task_id):
-    task_path = get_task_path(task_id)
     statement_path = get_statement_path(task_id)
     root = get_statement_xml_tree_root(statement_path)
     return root.find(TIME_LIMIT_TAG).text
 
 
 def get_memory_limit(task_id):
-    task_path = get_task_path(task_id)
     statement_path = get_statement_path(task_id)
     root = get_statement_xml_tree_root(statement_path)
     return root.find(MEMORY_LIMIT_TAG).text
+
+
+def get_task_title(task_id):
+    statement_path = get_statement_path(task_id)
+    root = get_statement_xml_tree_root(statement_path)
+    return root.find(TITLE_TAG).text
 
 
 def get_task_html(task_id):

@@ -7,7 +7,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import auth
 from django.contrib.auth.forms import UserCreationForm
 from django.template.context_processors import csrf
-from upp_app.models import Submission, Task
+from upp_app.models import Submission, Task, Verdict
+from task_library import task_reader
 
 
 def private_data(request):
@@ -80,6 +81,16 @@ def submissions(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
 
-    for i in range(1,paginator.num_pages+1):
+    for i in range(1, paginator.num_pages + 1):
         pages.append(i)
+
+    for contact in contacts:
+        contact.title_task = task_reader.get_task_title(contact.id_task_id)
+
+        verdict = Verdict.objects.all().filter(id_submission=contact.id)
+        if verdict:
+            contact.verdict = verdict[0].verdict_text
+        else:
+            contact.verdict = ''
+
     return render(request, 'personal_account/submissions.html', {"contacts": contacts, "pages": pages})
