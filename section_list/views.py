@@ -8,6 +8,6 @@ def sectionlist(request):
     context = {
         'sections': sections
     }
-    return render(request, 'sectionlist/sectionlist.html', context)
+    return render(request, 'section_list/section_list.html', context)
 
 
