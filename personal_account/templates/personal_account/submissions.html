@@ -32,8 +32,7 @@
                {% for contact in contacts %}
                    <tr>
                        <td>{{ contact.id }}</td>
-                       <td><a href="{% url 'task_page' contact.id_task contact.id_section_id %}">{{ contact.id_task }}</a></td>
-                       <!--<td>{{ contact.id_task_id }}</td> <br> -->
+                       <td><a href="{% url 'task_page' contact.id_task_id contact.id_section_id %}">{{ contact.id_task }}</a></td>
                        <td>{{ contact.status }}</td>
                    </tr>
                {% endfor %}
