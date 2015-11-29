@@ -3,7 +3,7 @@
 import codecs
 import xml.etree.ElementTree
 import os
-import os.file
+from os import path
 
 
 TASK_BASE_PATH = 'task_base'
@@ -12,7 +12,7 @@ STATEMENT = 'statement.xml'
 IN_EXTENSION = '.in'
 OUT_EXTENSION = '.out'
 TUTORIAL = 'tutorial'
-TXT_EXTENSION = 'txt'
+TXT_EXTENSION = '.txt'
 
 
 TITLE_TAG = 'title'
@@ -48,7 +48,7 @@ def get_statement_path(task_id):
 
 
 def get_tests_path(task_id):
-    return get_task_path + os.sep + TESTS
+    return get_task_path(task_id) + os.sep + TESTS
 
 
 def get_str_test_number(test_number):
@@ -60,11 +60,11 @@ def get_str_test_number(test_number):
 
 
 def get_input_test_path(task_id, test_number):
-    return get_tests_path + os.sep + get_str_test_number(test_number) + IN_EXTENSION
+    return get_tests_path(task_id) + os.sep + get_str_test_number(test_number) + IN_EXTENSION
 
 
 def get_output_test_path(task_id, test_number):
-    return get_tests_path + os.sep + get_str_test_number(test_number) + OUT_EXTENSION
+    return get_tests_path(task_id) + os.sep + get_str_test_number(test_number) + OUT_EXTENSION
 
 
 def get_statement_xml_tree_root(statement_path):
