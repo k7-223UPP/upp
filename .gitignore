@@ -5,4 +5,5 @@ __pycache__/*
 /upp/wsgi.py
 manage.py
 /sources/*
+!/sources/makefile
 db.sqlite3
