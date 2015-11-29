@@ -7,4 +7,4 @@ manage.py
 /sources/*
 !/sources/makefile
 db.sqlite3
-*/.DS_Stores
+*/.DS_Store
