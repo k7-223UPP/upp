@@ -27,7 +27,7 @@ def task_page(request, id_section, id_task):
             submission_to_save = Submission(id_user=request.user, id_task=task_current, id_section=section_current, status=process.STATUS_WAIT)
             submission_to_save.save()
             handle_uploaded_file(request.FILES['docfile'], str(submission_to_save.id))
-        return redirect('main')
+        return redirect('submissions')
 
     # request.method == 'GET'
     if not request.user.is_authenticated():
