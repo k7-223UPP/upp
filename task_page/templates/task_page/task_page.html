@@ -1,0 +1,28 @@
+{% extends 'menu/base.html' %}
+{% block title %}
+    {{ section.name }}
+{% endblock %}
+{% block content %}
+{#    <h1 align="center">{{ section.name }}</h1>#}
+    {% if user_is_authenticated %}
+        {% if no_tasks %}
+            <h4 align="center">К сожалению, для Вас новых задач нет.</h4>
+        {% else %}
+        {% endif %}
+    {% endif %}
+    <h4>Выбранная задача:</h4>
+{% autoescape off %}
+    {% for task, tutorial in tasks.items %}
+    {{ task }}
+    <br>
+{#    {{ tutorial }}#}
+    {% endfor %}
+ {% endautoescape %}
+    <form action="{% url 'task_page' userPT_ID section_ID user_ID task_ID %}" method="post" enctype="multipart/form-data"> 
+        {% csrf_token %} 
+        <p>{{ form.non_field_errors }}</p> 
+        <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p> 
+        <p> {{ form.docfile.errors }}  {{ form.docfile }}  </p> 
+        <p><input type="submit" value="Upload" /></p> 
+    </form>
+{% endblock %} 

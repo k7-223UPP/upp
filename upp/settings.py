@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'personal_account',
     'sectionlist',
     'section_page',
+    'task_page',
 
 
 )
