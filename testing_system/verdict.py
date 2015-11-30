@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class Verdict(object):
+class Verdict(BaseException):
     def __str__(self):
         return '-------'
 
