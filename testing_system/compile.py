@@ -14,7 +14,7 @@ CHECKER_SUCCESSFUL_STATUS = 0
 
 def compile(id_submission, base_path):
     sources_path = base_path + os.sep + SOURCES
-    absolute_code_path = sources_path + os.sep + relative_code_path
+    absolute_code_path = sources_path + os.sep + str(id_submission)
     absolute_make_file_path = sources_path + os.sep + MAKE_FILE_NAME
     make_status = subprocess.call(['make', \
                                    '-f', \
@@ -29,7 +29,7 @@ def compile(id_submission, base_path):
 def compare_outputs(id_task, input_file_name, output_file_name, \
                     user_output_file_name, test_number):
     checker_path = task_reader.get_checker_path(id_task)
-    checker_status = subprocess.call(['source ', checker_path, \
+    checker_status = subprocess.call([checker_path, \
                                       input_file_name, output_file_name, \
                                       user_output_file_name])
     if checker_status != CHECKER_SUCCESSFUL_STATUS:

@@ -47,7 +47,7 @@ def insert_verdict(id_submission, verdict_text, data_base_path):
 
 def delete_picked_task(id_section, id_task, id_user, data_base_path):
     connection = sqlite3.connect(data_base_path)
-    connection.execute('DELETE FROM upp_app_userpickedtask WHERE id_section_id={}, id_task_id={}, id_user_id={}'.format(id_section, id_task, id_user))
+    connection.execute('DELETE FROM upp_app_userpickedtask WHERE id_section_id={} AND id_task_id={} AND id_user_id={}'.format(id_section, id_task, id_user))
     connection.commit()
     connection.close()
 
@@ -68,7 +68,7 @@ def process_submission(submission, base_path):
 
         output_file_name = absolute_build_path + '.out'
         for test_number in range(1, test_count + 1):
-            sandbox.process_test(absolute_build_path, id_submission, test_number)
+            sandbox.process_test(absolute_build_path, id_task, test_number, output_file_name)
 
             compile.compare_outputs(id_task, task_reader.get_input_test_path(id_task, test_number), \
                                     task_reader.get_output_test_path(id_task, test_number), \
@@ -83,13 +83,15 @@ def process_submission(submission, base_path):
         insert_verdict(id_submission, str(ce), data_base_path)
     except verdict.RuntimeError as re:
         insert_verdict(id_submission, str(re), data_base_path)
-        delete_picked_task(id_section, id_task, id_user)
     except verdict.Accepted as ac:
         insert_verdict(id_submission, str(ac), data_base_path)
+        delete_picked_task(id_section, id_task, id_user, data_base_path)
     except verdict.MemoryLimit as ml:
         insert_verdict(id_submission, str(ml), data_base_path)
     except verdict.TimeLimit as tl:
         insert_verdict(id_submission, str(tl), data_base_path)
+    except verdict.WrongAnswer as wa:
+        insert_verdict(id_submission, str(wa), data_base_path)
 
     change_status(id_submission, STATUS_READY, data_base_path)
 
