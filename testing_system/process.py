@@ -8,45 +8,93 @@ from testing_system import verdict
 from time import sleep
 
 import os
+from os import path
 
 import sys
+
+from task_library import task_reader
+
+from testing_system import sandbox
 
 
 STATUS_WAIT = 'WAIT'
 STATUS_IN_PROGRESS = 'IN_PROGRESS'
 STATUS_READY = 'READY'
 
+DB = 'db.sqlite3'
 
-def process_submission(submission, connection, cursor):
-    submission.status = STATUS_IN_PROGRESS
-    submission.save()
-    id_submission = submission.id
+DELAY_BETWEEN_PROCESS = 0.01 # in seconds
+
+
+def get_data_base_path(base_path):
+    return base_path + os.sep + DB
+
+
+def change_status(id_submission, status, data_base_path):
+    connection = sqlite3.connect(data_base_path)
+    connection.execute('UPDATE Submission SET status = {} WHERE id_submission = {}'.format(status, id_submission))
+    connection.commit()
+    connection.close()
+
+
+def insert_verdict(id_submission, verdict_text, data_base_path):
+    connection = sqlite3.connect(data_base_path)
+    connection.execute('INSERT INTO Verdict (id_submission, verdict_text) VALUES ({}, {})'.format(id_submission, verdict_text))
+    connection.commit()
+    connection.close()
+
+
+def process_submission(submission, base_path):
+    id_submission = submission['id_submission']
+    id_task = submission['id_task_id']
+    data_base_path = get_data_base_path(base_path)
+
+    change_status(id_submission, STATUS_IN_PROGRESS, data_base_path)
+
     try:
-        absolute_build_path = compile.compile(id_submission)
-        # code to check
+        absolute_build_path = compile.compile(id_submission, base_path)
+
+        test_count = task_reader.get_tests_count(id_task)
+
+        output_file_name = absolute_build_path + '.out'
+        for test_number in range(1, test_count + 1):
+            sandbox.process_test(absolute_build_path, id_submission, test_number)
+
+            compile.compare_outputs(id_task, task_reader.get_input_test_path(id_task, test_number), \
+                                    task_reader.get_output_test_path(id_task, test_number), \
+                                    output_file_name, \
+                                    test_number)
+
+        if os.path.isfile(output_file_name):
+            os.remove(output_file_name)
+
+        raise verdict.Accepted()
     except verdict.CompilationError as ce:
-        submission_verdict = Verdict(id_submission=id_submission, verdict_text=str(ce))
-        submission_verdict.save()
-    submission.status = STATUS_READY
-    submission.save()
+        insert_verdict(id_submission, str(ce))
+    except verdict.RuntimeError as re:
+        insert_verdict(id_submission, str(re))
+    except verdict.Accepted as ac:
+        insert_verdict(id_submission, str(ac))
+    except verdict.MemoryLimit as ml:
+        insert_verdict(id_submission, str(ml))
+    except verdict.TimeLimit as tl:
+        insert_verdict(id_submission, str(tl))
+
+    change_status(id_submission, STATUS_READY, data_base_path)
 
 
 def process(base_path):
-    DB = 'db.sqlite3'
-    data_base_path = base_path + os.sep + DB
     while True:
-        connection = sqlite3.connect(data_base_path)
+        connection = sqlite3.connect(get_data_base_path(base_path))
         cursor = connection.cursor()
-        cursor.execute('SELECT * FROM Submission WHERE Status = {}'.format(STATUS_WAIT))
-
+        cursor.execute('SELECT * FROM Submission WHERE status = {}'.format(STATUS_WAIT))
         submission_to_process = cursor.fetchone()
+        connection.close()
 
         if not submission_to_process is None:
-            process_submission(submission_to_process, connection, cursor)
-            connection.commit()
+            process_submission(submission_to_process, base_path)
 
-        connection.close()
-        sleep(0.01) # delay between checking = 10 milliseconds
+        sleep(DELAY_BETWEEN_PROCESS)
 
 
 if __name__ == '__main__':

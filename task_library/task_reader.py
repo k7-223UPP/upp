@@ -13,6 +13,7 @@ IN_EXTENSION = '.in'
 OUT_EXTENSION = '.out'
 TUTORIAL = 'tutorial'
 TXT_EXTENSION = '.txt'
+CHECKER = 'checker'
 
 
 TITLE_TAG = 'title'
@@ -87,6 +88,10 @@ def get_task_title(task_id):
     statement_path = get_statement_path(task_id)
     root = get_statement_xml_tree_root(statement_path)
     return root.find(TITLE_TAG).text
+
+
+def get_checker_path(task_id):
+    return get_task_path(task_id) + os.sep + CHECKER
 
 
 def get_task_html(task_id):

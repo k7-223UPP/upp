@@ -10,7 +10,7 @@ def set_limits(memory_limit):
 
 def get_output(code_link, input_file_name, time_limit, memory_limit, test_number):
     with open(input_file_name, 'r') as input_file:
-        process = subprocess.Popen(code_link, stdin=input_file, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=set_limits(memory_limit))
+        process = subprocess.Popen('source ' + code_link, stdin=input_file, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=set_limits(memory_limit))
         try:
             out, err = process.communicate(timeout=time_limit)
         except subprocess.TimeoutExpired:
