@@ -32,14 +32,21 @@ def get_data_base_path(base_path):
 
 def change_status(id_submission, status, data_base_path):
     connection = sqlite3.connect(data_base_path)
-    connection.execute('UPDATE Submission SET status = {} WHERE id_submission = {}'.format(status, id_submission))
+    connection.execute('UPDATE upp_app_submission SET status = {} WHERE id_submission = {}'.format(status, id_submission))
     connection.commit()
     connection.close()
 
 
 def insert_verdict(id_submission, verdict_text, data_base_path):
     connection = sqlite3.connect(data_base_path)
-    connection.execute('INSERT INTO Verdict (id_submission, verdict_text) VALUES ({}, {})'.format(id_submission, verdict_text))
+    connection.execute('INSERT INTO upp_app_verdict (id_submission, verdict_text) VALUES ({}, {})'.format(id_submission, verdict_text))
+    connection.commit()
+    connection.close()
+
+
+def delete_picked_task(id_section, id_task, id_user, data_base_path):
+    connection = sqlite3.connect(data_base_path)
+    connection.execute('DELETE FROM upp_app_userpickedtask WHERE id_section={}, id_task={}, id_user={}'.format(id_section, id_task, id_user))
     connection.commit()
     connection.close()
 
@@ -47,6 +54,8 @@ def insert_verdict(id_submission, verdict_text, data_base_path):
 def process_submission(submission, base_path):
     id_submission = submission['id_submission']
     id_task = submission['id_task_id']
+    id_section = submission['id_seciond_id']
+    id_user = submission['id_user_id']
     data_base_path = get_data_base_path(base_path)
 
     change_status(id_submission, STATUS_IN_PROGRESS, data_base_path)
@@ -73,6 +82,7 @@ def process_submission(submission, base_path):
         insert_verdict(id_submission, str(ce))
     except verdict.RuntimeError as re:
         insert_verdict(id_submission, str(re))
+        delete_picked_task(id_section, id_task, id_user)
     except verdict.Accepted as ac:
         insert_verdict(id_submission, str(ac))
     except verdict.MemoryLimit as ml:
@@ -87,9 +97,12 @@ def process(base_path):
     while True:
         connection = sqlite3.connect(get_data_base_path(base_path))
         cursor = connection.cursor()
-        cursor.execute('SELECT * FROM Submission WHERE status = {}'.format(STATUS_WAIT))
+        cursor.execute('SELECT * FROM upp_app_submission WHERE status = {}'.format(STATUS_WAIT))
         submission_to_process = cursor.fetchone()
         connection.close()
+
+        sleep(DELAY_BETWEEN_PROCESS)
+        continue
 
         if not submission_to_process is None:
             process_submission(submission_to_process, base_path)
@@ -98,10 +111,13 @@ def process(base_path):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 1:
+    if len(sys.argv) != 2:
         print('incorrect usage!')
         print('usage: process base_path')
         sys.exit(0)
 
-    base_path = sys.argv[0]
+    base_path = sys.argv[1]
+
+    print(get_data_base_path(base_path))
+
     process(base_path)
