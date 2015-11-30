@@ -8,7 +8,8 @@ from testing_system import verdict
 from time import sleep
 
 import os
-from os import path
+
+from upp import settings
 
 import sys
 
@@ -121,12 +122,7 @@ def process(base_path):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print('incorrect usage!')
-        print('usage: process base_path')
-        sys.exit(0)
-
-    base_path = sys.argv[1]
+    base_path = settings.BASE_DIR
 
     print(get_data_base_path(base_path))
 

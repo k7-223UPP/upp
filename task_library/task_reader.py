@@ -3,7 +3,7 @@
 import codecs
 import xml.etree.ElementTree
 import os
-from os import path
+from upp import settings
 
 
 TASK_BASE_PATH = 'task_base'
@@ -41,7 +41,7 @@ def get_tutorial_html(task_id):
 
 
 def get_task_path(task_id):
-    return TASK_BASE_PATH + os.sep + str(task_id)
+    return settings.BASE_DIR + os.sep + TASK_BASE_PATH + os.sep + str(task_id)
 
 
 def get_statement_path(task_id):

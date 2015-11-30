@@ -14,10 +14,12 @@ CHECKER_SUCCESSFUL_STATUS = 0
 
 def compile(id_submission, base_path):
     sources_path = base_path + os.sep + SOURCES
-    relative_code_path = str(id_submission) + CPP_EXTENSION
-    make_status = subprocess.call(['make', '-C ' + sources_path, \
-                                   '-f ' + MAKE_FILE_NAME, \
-                                    relative_code_path])
+    absolute_code_path = sources_path + os.sep + relative_code_path
+    absolute_make_file_path = sources_path + os.sep + MAKE_FILE_NAME
+    make_status = subprocess.call(['make', \
+                                   '-f', \
+                                   absolute_make_file_path, \
+                                   absolute_code_path])
     if make_status != MAKE_SUCCESSFUL_STATUS:
         raise verdict.CompilationError()
     absolute_build_path = sources_path + os.sep + str(id_submission)
