@@ -67,7 +67,7 @@ def submissions(request):
     if not request.user.is_authenticated():
         return redirect('access')
     pages = []
-    submission = Submission.objects.all().filter(id_user=auth.get_user(request).id)
+    submission = Submission.objects.all().filter(id_user=auth.get_user(request).id).order_by('id')
 
     paginator = Paginator(submission, 2) # Show 25 contacts per page
 
