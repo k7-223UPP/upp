@@ -50,6 +50,7 @@ def register(request):
             request.session['error'] = message
             return redirect(registration)
 
+
 def exist(request):
     return render_to_response('registration/error_message1.html')
 
