@@ -27,19 +27,6 @@ SECOND_TEST_NOTE_TAG = 'second_test_note'
 TEXT_NOTE_TAG = 'text_note'
 
 
-def get_tutorial_html(task_id):
-    task_path = TASK_BASE_PATH + os.sep + str(task_id)
-    tutorial_path = task_path + os.sep + TUTORIAL + TXT_EXTENSION
-
-    with open(tutorial_path, 'r', encoding='utf-8') as tutorial_file:
-        tutorial_text = tutorial_file.read()
-
-    tutorial_html = '<p align="center"><b>Обучающие материалы</b></p>\n'
-    tutorial_html += '<p>' + tutorial_text + '</p>\n'
-
-    return tutorial_html
-
-
 def get_task_path(task_id):
     return settings.BASE_DIR + os.sep + TASK_BASE_PATH + os.sep + str(task_id)
 
@@ -66,6 +53,23 @@ def get_input_test_path(task_id, test_number):
 
 def get_output_test_path(task_id, test_number):
     return get_tests_path(task_id) + os.sep + get_str_test_number(test_number) + OUT_EXTENSION
+
+
+def get_tutorial_path(task_id):
+    return get_task_path(task_id) + os.sep + TUTORIAL + TXT_EXTENSION
+
+
+def get_tutorial_html(task_id):
+    task_path = get_task_path(task_id)
+    tutorial_path = get_tutorial_path(task_id)
+
+    with open(tutorial_path, 'r', encoding='utf-8') as tutorial_file:
+        tutorial_text = tutorial_file.read()
+
+    tutorial_html = '<p align="center"><b>Обучающие материалы</b></p>\n'
+    tutorial_html += '<p>' + tutorial_text + '</p>\n'
+
+    return tutorial_html
 
 
 def get_statement_xml_tree_root(statement_path):
