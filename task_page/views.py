@@ -58,10 +58,10 @@ def task_page(request, id_section, id_task):
                     context = {}
                     context['tasks'] = tasks
                     context['section'] = get_object_or_404(Section, id=id_section)
-                    context['show_tutorial'] = True
+                    context['show_tutorial'] = False
                     for submission in checked_sumbissions:
                         if (Verdict.objects.all().filter(id_submission = submission.id, verdict_text = 'AC')):
-                            context['show_tutorial'] = False
+                            context['show_tutorial'] = True
                             break
                     context['task_id'] = id_task
                     form = SubmissionDocument()
