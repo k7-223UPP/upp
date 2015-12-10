@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render, get_object_or_404, redirect
-from upp_app.models import Section, TaskInSection, Task, UserPickedTask, Submission
+from upp_app.models import Section, Task, UserPickedTask, Submission, Verdict
 import task_library.task_reader
 from .forms import SubmissionDocument
 
@@ -37,7 +37,8 @@ def task_page(request, id_section, id_task):
             if not (Submission.objects.all().filter(id_section=id_section, id_user=request.user.id, id_task=id_task)):
                 return redirect('access')
             else:
-                if not (Submission.objects.all().filter(id_section=id_section, id_user=request.user.id, id_task=id_task, status = process.STATUS_READY)):
+                checked_sumbissions = Submission.objects.all().filter(id_section=id_section, id_user=request.user.id, id_task=id_task, status = process.STATUS_READY)
+                if not (checked_sumbissions):
                     tasks = {}
                     for i in id_task:
                         task = get_object_or_404(Task, id=i)
@@ -50,7 +51,7 @@ def task_page(request, id_section, id_task):
                     context['task_id'] = id_task
                     form = SubmissionDocument()
                     context['form'] = form
-                    return render(request, 'task_page/task_page.html')
+                    return render(request, 'task_page/task_page.html', context)
                 else:
                     tasks = {}
                     for i in id_task:
@@ -61,10 +62,14 @@ def task_page(request, id_section, id_task):
                     context['tasks'] = tasks
                     context['section'] = get_object_or_404(Section, id=id_section)
                     context['show_tutorial'] = True
+                    for submission in checked_sumbissions:
+                        if (Verdict.objects.all().filter(id_submission = submission.id, verdict_text = 'AC')):
+                            context['show_tutorial'] = False
+                            break
                     context['task_id'] = id_task
                     form = SubmissionDocument()
                     context['form'] = form
-                    return render(request, 'task_page/task_page.html')
+                    return render(request, 'task_page/task_page.html', context)
         else:
             tasks = {}
             for i in id_task:
