@@ -4,9 +4,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from upp_app.models import Section, Task, UserPickedTask, Submission, Verdict
 import task_library.task_reader
 from .forms import SubmissionDocument
-
-from django.contrib import auth
-from django.contrib.auth.models import User
 from testing_system import process
 import os
 from upp import settings
