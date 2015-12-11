@@ -30,7 +30,7 @@ def task_page(request, id_section, id_task):
     if not request.user.is_authenticated():
         return redirect('access')
     else:
-        if not (UserPickedTask.objects.all().filter(id_section=id_section, id_user=request.user.id, id_task = id_task)):
+        if not (UserPickedTask.objects.all().filter(id_section=id_section, id_user=request.user.id, id_task=id_task)):
             if not (Submission.objects.all().filter(id_section=id_section, id_user=request.user.id, id_task=id_task)):
                 return redirect('access')
             else:

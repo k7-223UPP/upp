@@ -58,3 +58,11 @@ class TestTaskInSection(models.Model):
     def __str__(self):
         return 'task=' + str(self.id_test_task) + '; section=' + str(self.id_section)
 
+class UserClosedTasks(models.Model):
+    id_user = models.ForeignKey(User)
+    id_section = models.ForeignKey(Section)
+    id_task = models.ForeignKey(Task)
+    is_solved = models.BooleanField()
+
+    def __str__(self):
+        return 'user=' + str(self.id_user) + '; section=' + str(self.id_section) + '; task=' + str(self.id_task) + '; is_solved=' + str(self.is_solved)
