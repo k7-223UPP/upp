@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render, get_object_or_404
-from upp_app.models import Section, TaskInSection, Task, TestTaskInSection, TestTask, UserPickedTask, Submission
+from upp_app.models import Section, TaskInSection, Task, TestTaskInSection, TestTask, UserPickedTask, Submission, UserClosedTasks
 import task_library.task_reader
 import random
 from django.shortcuts import redirect
@@ -30,8 +30,9 @@ def section_page(request, section_id):
         except UserPickedTask.DoesNotExist:
             tasks_in_section = TaskInSection.objects.filter(id_section=section)
             tasks_in_section_id = set(tasks_in_section.values_list('id_task', flat=True))
-            user_submissions = Submission.objects.filter(id_user = request.user, id_section = section)
-            solved_tasks_id = set(user_submissions.values_list('id_task', flat=True))
+            # user_submissions = Submission.objects.filter(id_user = request.user, id_section = section)
+            user_closed_tasks = UserClosedTasks.objects.filter(id_user=request.user, id_section=section)
+            solved_tasks_id = set(user_closed_tasks.values_list('id_task', flat=True))
             suitable_tasks_id = list(tasks_in_section_id - solved_tasks_id)
             if len(suitable_tasks_id) == 0:
                 context['no_tasks'] = True
