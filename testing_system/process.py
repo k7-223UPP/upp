@@ -51,6 +51,18 @@ def delete_picked_task(id_section, id_task, id_user, data_base_path):
     connection.commit()
     connection.close()
 
+def delete_closed_task(id_section, id_task, id_user, data_base_path):
+    connection = sqlite3.connect(data_base_path)
+    connection.execute('DELETE FROM upp_app_userclosedtasks WHERE id_section_id={} AND id_task_id={} AND id_user_id={}'.format(id_section, id_task, id_user))
+    connection.commit()
+    connection.close()
+
+def insert_closed_task(id_section, id_task, id_user, data_base_path):
+    connection = sqlite3.connect(data_base_path)
+    connection.execute("INSERT INTO upp_app_userclosedtasks (id_user_id, id_section_id, id_task_id, is_solved) VALUES ({}, {}, {}, {})".format(id_user, id_section, id_task, 1))
+    connection.commit()
+    connection.close()
+
 
 def process_submission(submission, base_path):
     id_submission = submission['id']
@@ -85,6 +97,8 @@ def process_submission(submission, base_path):
         insert_verdict(id_submission, str(re), data_base_path)
     except verdict.Accepted as ac:
         insert_verdict(id_submission, str(ac), data_base_path)
+        delete_closed_task(id_section, id_task, id_user, data_base_path)
+        insert_closed_task(id_section, id_task, id_user, data_base_path)
         delete_picked_task(id_section, id_task, id_user, data_base_path)
     except verdict.MemoryLimit as ml:
         insert_verdict(id_submission, str(ml), data_base_path)

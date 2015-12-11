@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render, get_object_or_404, redirect
-from upp_app.models import Section, Task, UserPickedTask, Submission, Verdict
+from upp_app.models import Section, Task, UserPickedTask, Submission, Verdict, UserClosedTasks
 import task_library.task_reader
 from .forms import SubmissionDocument
 from testing_system import process
@@ -30,54 +30,37 @@ def task_page(request, id_section, id_task):
     if not request.user.is_authenticated():
         return redirect('access')
     else:
+        tasks = {}
+        for i in id_task:
+            task = get_object_or_404(Task, id=i)
+            tasks[task_library.task_reader.get_task_html(task.id)] = task_library.task_reader.get_tutorial_html(
+                task.id)
+        context = {}
+        context['tasks'] = tasks
+        context['section'] = get_object_or_404(Section, id=id_section)
+        context['show_tutorial'] = False
+        context['task_id'] = id_task
+        form = SubmissionDocument()
+        context['form'] = form
         if not (UserPickedTask.objects.all().filter(id_section=id_section, id_user=request.user.id, id_task=id_task)):
-            if not (Submission.objects.all().filter(id_section=id_section, id_user=request.user.id, id_task=id_task)):
+            if not (UserClosedTasks.objects.all().filter(id_section=id_section, id_user=request.user.id, id_task=id_task)):
                 return redirect('access')
             else:
-                checked_sumbissions = Submission.objects.all().filter(id_section=id_section, id_user=request.user.id, id_task=id_task, status = process.STATUS_READY)
-                if not (checked_sumbissions):
-                    tasks = {}
-                    for i in id_task:
-                        task = get_object_or_404(Task, id=i)
-                        tasks[task_library.task_reader.get_task_html(task.id)] = task_library.task_reader.get_tutorial_html(
-                            task.id)
-                    context = {}
-                    context['tasks'] = tasks
-                    context['section'] = get_object_or_404(Section, id=id_section)
-                    context['show_tutorial'] = False
-                    context['task_id'] = id_task
-                    form = SubmissionDocument()
-                    context['form'] = form
-                    return render(request, 'task_page/task_page.html', context)
-                else:
-                    tasks = {}
-                    for i in id_task:
-                        task = get_object_or_404(Task, id=i)
-                        tasks[task_library.task_reader.get_task_html(task.id)] = task_library.task_reader.get_tutorial_html(
-                            task.id)
-                    context = {}
-                    context['tasks'] = tasks
-                    context['section'] = get_object_or_404(Section, id=id_section)
-                    context['show_tutorial'] = False
-                    for submission in checked_sumbissions:
-                        if (Verdict.objects.all().filter(id_submission = submission.id, verdict_text = 'AC')):
-                            context['show_tutorial'] = True
-                            break
-                    context['task_id'] = id_task
-                    form = SubmissionDocument()
-                    context['form'] = form
-                    return render(request, 'task_page/task_page.html', context)
+                context['show_tutorial'] = True
+                return render(request, 'task_page/task_page.html', context)
         else:
-            tasks = {}
-            for i in id_task:
-                task = get_object_or_404(Task, id=i)
-                tasks[task_library.task_reader.get_task_html(task.id)] = task_library.task_reader.get_tutorial_html(
-                    task.id)
-            context = {}
-            context['tasks'] = tasks
-            context['section'] = get_object_or_404(Section, id=id_section)
-            context['show_tutorial'] = False
-            context['task_id'] = id_task
-            form = SubmissionDocument()
-            context['form'] = form
             return render(request, 'task_page/task_page.html', context)
+
+def task_page_close(request, id_section, id_task):
+    if request.method == 'POST':
+        task_current = get_object_or_404(Task, id=id_task)
+        section_current = get_object_or_404(Section, id=id_section)
+        task_to_close = UserClosedTasks(id_user=request.user, id_section=section_current, id_task=task_current, is_solved=False)
+        task_to_close.save()
+        user_picked_task = get_object_or_404(UserPickedTask, id_section=section_current, id_task=task_current, id_user=request.user)
+        user_picked_task.delete()
+        return redirect('section_page', id_section)
+
+    else:
+        return redirect('access')
+

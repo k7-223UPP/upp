@@ -52,13 +52,14 @@
             {{ tutorial }}
         {% else %}
             <p>Сначала решите задачу!</p>
-        {% endif %}
             <div>
-                <form action ="#" align="center" method="post">
+                <form action ="{% url 'task_page_close' section.id task_id %}" align="center" method="post">
                     {% csrf_token %}
                     <input class="btn btn-default" type="submit" value="Surrender">
                 </form>
             </div>
+        {% endif %}
+
 {#    {{ tutorial }}#}
     {% endfor %}
  {% endautoescape %}
