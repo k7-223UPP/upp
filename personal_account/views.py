@@ -35,6 +35,8 @@ def private_data(request):
                     return render(request, 'personal_account/private_data.html', args)
                 user.set_password(passwordnew)
                 user.save()
+                user = auth.authenticate(username=username, password=passwordnew)
+                auth.login(request, user)
                 args['success_edit_newpassword'] = "Поздравляем! Ваш пароль успешно изменен!"
                 return render(request, 'personal_account/private_data.html', args)
             else:

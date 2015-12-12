@@ -35,12 +35,9 @@
                         <label class="error">{{ non_unique_login }}</label>
                 {% endif %}
                 {% if incorrect_login %}
-                        <label class="error">{{ incorrect_login }}</label>
-                {% endif %}
-                {% if incorrect_login %}
                         <label class="error">{{ oldlogin_equal_newlogin }}</label>
                 {% endif %}
-            {% if password_error %}
+                {% if password_error %}
                         <label class="error">{{ password_error }}</label>
                 {% endif %}
             </h2>

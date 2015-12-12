@@ -22,7 +22,7 @@ def registration(request):
             args['incorrect_login'] = "Некорректный логин"
             return render_to_response('registration/registration.html', args)
         if len(request.POST.get('password1')) < 6 or len(request.POST.get('password1')) > 18 or not re.match(
-                r'^(?=\w{6,10}$)(?=.*?\d).*', request.POST.get('password1')):
+                r'^(?=[0-9+а-яА-ЯёЁa-zA-Z0-9]*(?=.*?\d).*)', request.POST.get('password1')):
             args['incorrect_password'] = "Некорректный пароль"
             return render_to_response('registration/registration.html', args)
         if request.POST.get('password1') != request.POST.get('password2'):
