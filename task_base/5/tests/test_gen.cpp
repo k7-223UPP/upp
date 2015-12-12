@@ -33,7 +33,7 @@ inline std::string GetInputFileName(int testNumber) {
 std::vector<std::pair<int, int>> GetFactorization(int n) {
     std::vector<std::pair<int, int>> result;
     for (int i = 2; i * i <= n; ++i) {
-        if (n % i) {
+        if (n % i == 0) {
             result.push_back(std::make_pair(i, 0));
             while (n % i == 0) {
                 ++result.back().second;
