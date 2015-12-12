@@ -5,9 +5,10 @@
 #include <iomanip>
 #include <fstream>
 
+const int MIN_N = 1;
+const int MAX_N = 1e5;
+
 inline int GenN() {
-    const int MIN_N = 1;
-    const int MAX_N = 1e5;
     return rand() % (MAX_N - MIN_N + 1) + MIN_N;
 }
 
@@ -57,7 +58,7 @@ int GetPhi(int n) {
 }
 
 int main() {
-    for (int testNumber = 3; testNumber <= 99; ++testNumber) {
+    for (int testNumber = 3; testNumber <= 120; ++testNumber) {
         std::cout << testNumber << std::endl;
 
         const std::string inputFileName = GetInputFileName(testNumber);
@@ -65,7 +66,12 @@ int main() {
 
         std::cout << "  " << inputFileName << " " << outputFileName << std::endl;
 
-        int n = GenN();
+        int n;
+        if (testNumber <= 99) {
+            n = GenN();
+        } else {
+            n = MAX_N - (testNumber - 99);
+        }
         std::cout << "  " << n << " " << GetPhi(n) << std::endl;
 
         std::ofstream inputFile(inputFileName);
