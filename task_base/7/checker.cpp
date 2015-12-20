@@ -10,9 +10,6 @@ int main(int argc, char** argv)
     ifstream output(argv[2]);
     ifstream userOutput(argv[3]);
 
-    int n;
-    input >> n;
-
     int realAnswer;
     output >> realAnswer;
 
