@@ -48,6 +48,8 @@ def get_str_test_number(test_number):
 
 
 def get_input_test_path(task_id, test_number):
+    s = get_tests_path(task_id) + os.sep + get_str_test_number(test_number) + IN_EXTENSION
+    print (s)
     return get_tests_path(task_id) + os.sep + get_str_test_number(test_number) + IN_EXTENSION
 
 
