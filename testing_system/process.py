@@ -73,7 +73,7 @@ def update_user_rating(id_user, id_section, id_task, is_success):
 def update_task_rating(id_user, id_task, id_section, is_success):
     new_task_rating = rating_change.calc_new_task_rating(id_user, id_section, id_task, is_success)
     connection = sqlite3.connect(get_data_base_path(settings.BASE_DIR))
-    connection.execute("UPDATE upp_app_taskinsections SET rating='{}' WHERE id_user_id={} AND id_section_id={}".format(new_task_rating, id_user, id_section))
+    connection.execute("UPDATE upp_app_taskinsection SET rating='{}' WHERE id_user_id={} AND id_section_id={}".format(new_task_rating, id_user, id_section))
     connection.commit()
     connection.close()
 
