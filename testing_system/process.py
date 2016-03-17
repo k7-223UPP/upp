@@ -4,11 +4,11 @@ import sqlite3
 
 from testing_system import compile
 from testing_system import verdict
+from testing_system import rating_change
 
 from time import sleep
 
 import os
-
 from upp import settings
 
 import sys
@@ -63,6 +63,19 @@ def insert_closed_task(id_section, id_task, id_user, data_base_path):
     connection.commit()
     connection.close()
 
+def update_user_rating(id_user, id_section, id_task, is_success):
+    new_user_rating = rating_change.calc_new_user_rating(id_user, id_section, id_task, is_success)
+    connection = sqlite3.connect(get_data_base_path(settings.BASE_DIR))
+    connection.execute("UPDATE upp_app_userratinginsection SET rating='{}' WHERE id_user_id={} AND id_section_id={}".format(new_user_rating, id_user, id_section))
+    connection.commit()
+    connection.close()
+
+def update_task_rating(id_user, id_task, id_section, is_success):
+    new_task_rating = rating_change.calc_new_task_rating(id_user, id_section, id_task, is_success)
+    connection = sqlite3.connect(get_data_base_path(settings.BASE_DIR))
+    connection.execute("UPDATE upp_app_taskinsection SET rating='{}' WHERE id_user_id={} AND id_section_id={}".format(new_task_rating, id_user, id_section))
+    connection.commit()
+    connection.close()
 
 def process_submission(submission, base_path):
     id_submission = submission['id']
@@ -81,7 +94,6 @@ def process_submission(submission, base_path):
         output_file_name = absolute_build_path + '.out'
         for test_number in range(1, test_count + 1):
             sandbox.process_test(absolute_build_path, id_task, test_number, output_file_name)
-
             compile.compare_outputs(id_task, task_reader.get_input_test_path(id_task, test_number), \
                                     task_reader.get_output_test_path(id_task, test_number), \
                                     output_file_name, \
@@ -100,6 +112,8 @@ def process_submission(submission, base_path):
         delete_closed_task(id_section, id_task, id_user, data_base_path)
         insert_closed_task(id_section, id_task, id_user, data_base_path)
         delete_picked_task(id_section, id_task, id_user, data_base_path)
+        update_user_rating(id_user, id_section, id_task, True)
+        update_task_rating(id_user, id_section, id_task, True)
     except verdict.MemoryLimit as ml:
         insert_verdict(id_submission, str(ml), data_base_path)
     except verdict.TimeLimit as tl:
@@ -114,7 +128,7 @@ def process(base_path):
     iteration_number = 0
     while True:
         iteration_number += 1
-        print('iteration =', iteration_number)
+        #print('iteration =', iteration_number)
 
         connection = sqlite3.connect(get_data_base_path(base_path))
         connection.row_factory = sqlite3.Row
@@ -139,7 +153,4 @@ def process(base_path):
 
 if __name__ == '__main__':
     base_path = settings.BASE_DIR
-
-    print(get_data_base_path(base_path))
-
     process(base_path)

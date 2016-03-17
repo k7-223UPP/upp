@@ -8,7 +8,6 @@ from testing_system import process
 import os
 from upp import settings
 
-
 def handle_uploaded_file(f, strg):
     with open(settings.BASE_DIR + os.sep + "sources" + os.sep + (str(strg) + ".cpp"), 'wb+') as destination:
         for chunk in f.chunks():
@@ -21,7 +20,7 @@ def task_page(request, id_section, id_task):
         if form.is_valid():
             task_current = get_object_or_404(Task, id=id_task)
             section_current = get_object_or_404(Section, id=id_section)
-            submission_to_save = Submission(id_user=request.user, id_task=task_current, id_section=section_current, status=process.STATUS_WAIT)
+            submission_to_save = Submission(id_user=request.user, id_task=task_current, id_section=section_current, status=process.STATUS_WAIT, )
             submission_to_save.save()
             handle_uploaded_file(request.FILES['docfile'], str(submission_to_save.id))
         return redirect('submissions')
@@ -59,8 +58,9 @@ def task_page_close(request, id_section, id_task):
         task_to_close.save()
         user_picked_task = get_object_or_404(UserPickedTask, id_section=section_current, id_task=task_current, id_user=request.user)
         user_picked_task.delete()
+        process.update_user_rating(request.user.id, id_section, id_task, False)
+        process.update_task_rating(request.user.id, id_section, id_task, False)
         return redirect('section_page', id_section)
-
     else:
         return redirect('access')
 
