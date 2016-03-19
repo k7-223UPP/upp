@@ -5,11 +5,12 @@
 {% block content %}
     <h1 align="center">{{ section.name }}</h1>
     {% if user_is_authenticated %}
+        <h4 align="center">Рейтинг в секции: {{ user_rating }}</h4>
         {% if no_tasks %}
             <h4 align="center">К сожалению, для Вас новых задач нет.</h4>
         {% else %}
-            <div>
-                <form action ="#" align="center" method="post">
+            <div align="center">
+                <form action ="#" method="post">
                     {% csrf_token %}
                     <input class="btn btn-default" type="submit" value="{{ button_name }}">
                 </form>
@@ -17,7 +18,7 @@
         {% endif %}
     {% endif %}
     <h4>Описание к разделу:</h4>
-    <pre>{{ section.description }}</pre>
+    <pre >{{ section.description }}</pre>
     <h4>Эталонные задачи раздела:</h4>
 {% autoescape off %}
     {% for task, tutorial in test_tasks.items %}

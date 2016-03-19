@@ -35,7 +35,9 @@
     {% endif %}
 {% autoescape off %}
     {% for task, tutorial in tasks.items %}
-    {{ task }}
+        <h4 align="center">Ваш рейтинг в секции: {{ user_rating_in_section }}</h4>
+        <h4 align="center">Рейтинг задачи в секции: {{ task_rating }}</h4>
+        {{ task }}
     <br>
         <form action="{% url 'task_page' section.id task_id %}" method="post" enctype="multipart/form-data" class="form-inline"> 
         {% csrf_token %} 

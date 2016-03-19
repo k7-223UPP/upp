@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Task(models.Model):
-    # rating = models.IntegerField()
     name = models.CharField(max_length=50)
     datalink = models.CharField(max_length=100)
 
@@ -75,16 +74,15 @@ class UserClosedTasks(models.Model):
 class UserRatingInSection(models.Model):
     id_user = models.ForeignKey(User)
     id_section = models.ForeignKey(Section)
-    rating = models.IntegerField()
-
+    rating = models.IntegerField(default=1000)
     def __str__(self):
-        return 'user=' + str(self.id_user) + '; section=' + str(self.id_section)
+        return 'user=' + str(self.id_user) + '; section=' + str(self.id_section) + '; rating=' + str(self.rating)
 
 class RatingHistory(models.Model):
     id_user = models.ForeignKey(User)
     id_section = models.ForeignKey(Section)
-    date_of_change = models.DateTimeField()
+    date_of_change = models.DateTimeField(auto_now_add = True)
     rating = models.IntegerField()
 
     def __str__(self):
-        return 'user=' + str(self.id_user) + '; section=' + str(self.id_section)
+        return 'user=' + str(self.id_user) + '; section=' + str(self.id_section) + '; date=' + str(self.date_of_change) + '; rating=' + str(self.rating)

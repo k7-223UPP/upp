@@ -46,8 +46,7 @@ INSTALLED_APPS = (
     'section_list',
     'section_page',
     'task_page',
-
-
+    'rating_changing'
 )
 
 MIDDLEWARE_CLASSES = (

@@ -5,10 +5,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 # Create your views here.
 from django.shortcuts import render_to_response
 from django.contrib import auth
-from django.contrib.auth.forms import UserCreationForm, User
+from django.contrib.auth.forms import UserCreationForm
 from django.template.context_processors import csrf
-
-from upp_app.models import Section, UserRatingInSection
 
 
 def registration(request):
@@ -33,9 +31,6 @@ def registration(request):
         if newuser_form.is_valid():
             newuser_form.save()
             auth.authenticate(username=newuser_form['username'], password=newuser_form['password1'])
-            #for section in Section.objects.all():
-             #   new_user_r_in_s = UserRatingInSection(get_object_or_404(UserRatingInSection, id_user=User.objects.all().filter(username=request.POST.get('username')), id_section=section,rating=1000))
-              #  new_user_r_in_s.save()
             args['success_registration'] = "Поздравляем! Вы успешно зарегистрировались в системе!"
             return render_to_response('login/login.html', args)
         else:

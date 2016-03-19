@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render, get_object_or_404, redirect
-from upp_app.models import Section, Task, UserPickedTask, Submission, Verdict, UserClosedTasks
+from upp_app.models import Section, Task, UserPickedTask, Submission, UserClosedTasks, TaskInSection, UserRatingInSection
 import task_library.task_reader
 from .forms import SubmissionDocument
 from testing_system import process
+from rating_changing import rating_change
 import os
 from upp import settings
 
@@ -30,11 +31,22 @@ def task_page(request, id_section, id_task):
         return redirect('access')
     else:
         tasks = {}
+        context = {}
+        user_rating_in_section = get_object_or_404(UserRatingInSection, id_user = request.user, id_section = id_section)
+        context['user_rating_in_section'] = user_rating_in_section.rating
         for i in id_task:
             task = get_object_or_404(Task, id=i)
-            tasks[task_library.task_reader.get_task_html(task.id)] = task_library.task_reader.get_tutorial_html(
-                task.id)
-        context = {}
+            tasks[task_library.task_reader.get_task_html(task.id)] = task_library.task_reader.get_tutorial_html(task.id)
+            try:
+                task_in_section = get_object_or_404(TaskInSection, id_task=task, id_section= id_section)
+            except:
+                None
+            if task_in_section is None or task_in_section.rating == 0:
+                task_rating = 1000
+                TaskInSection(id_task = task, id_section = id_section, rating=task_rating).save()
+            else:
+                task_rating = task_in_section.rating
+            context['task_rating'] = task_rating
         context['tasks'] = tasks
         context['section'] = get_object_or_404(Section, id=id_section)
         context['show_tutorial'] = False
@@ -58,8 +70,7 @@ def task_page_close(request, id_section, id_task):
         task_to_close.save()
         user_picked_task = get_object_or_404(UserPickedTask, id_section=section_current, id_task=task_current, id_user=request.user)
         user_picked_task.delete()
-        process.update_user_rating(request.user.id, id_section, id_task, False)
-        process.update_task_rating(request.user.id, id_section, id_task, False)
+        rating_change.update_ratings(request.user.id, id_section, id_task, False)
         return redirect('section_page', id_section)
     else:
         return redirect('access')

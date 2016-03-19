@@ -4,17 +4,12 @@ import sqlite3
 
 from testing_system import compile
 from testing_system import verdict
-from testing_system import rating_change
 
 from time import sleep
-
 import os
+from rating_changing import rating_change
 from upp import settings
-
-import sys
-
 from task_library import task_reader
-
 from testing_system import sandbox
 
 
@@ -63,20 +58,6 @@ def insert_closed_task(id_section, id_task, id_user, data_base_path):
     connection.commit()
     connection.close()
 
-def update_user_rating(id_user, id_section, id_task, is_success):
-    new_user_rating = rating_change.calc_new_user_rating(id_user, id_section, id_task, is_success)
-    connection = sqlite3.connect(get_data_base_path(settings.BASE_DIR))
-    connection.execute("UPDATE upp_app_userratinginsection SET rating='{}' WHERE id_user_id={} AND id_section_id={}".format(new_user_rating, id_user, id_section))
-    connection.commit()
-    connection.close()
-
-def update_task_rating(id_user, id_task, id_section, is_success):
-    new_task_rating = rating_change.calc_new_task_rating(id_user, id_section, id_task, is_success)
-    connection = sqlite3.connect(get_data_base_path(settings.BASE_DIR))
-    connection.execute("UPDATE upp_app_taskinsection SET rating='{}' WHERE id_user_id={} AND id_section_id={}".format(new_task_rating, id_user, id_section))
-    connection.commit()
-    connection.close()
-
 def process_submission(submission, base_path):
     id_submission = submission['id']
     id_task = submission['id_task_id']
@@ -88,7 +69,6 @@ def process_submission(submission, base_path):
 
     try:
         absolute_build_path = compile.compile(id_submission, base_path)
-
         test_count = task_reader.get_tests_count(id_task)
 
         output_file_name = absolute_build_path + '.out'
@@ -112,8 +92,7 @@ def process_submission(submission, base_path):
         delete_closed_task(id_section, id_task, id_user, data_base_path)
         insert_closed_task(id_section, id_task, id_user, data_base_path)
         delete_picked_task(id_section, id_task, id_user, data_base_path)
-        update_user_rating(id_user, id_section, id_task, True)
-        update_task_rating(id_user, id_section, id_task, True)
+        rating_change.update_ratings(id_user, id_section, id_task, True)
     except verdict.MemoryLimit as ml:
         insert_verdict(id_submission, str(ml), data_base_path)
     except verdict.TimeLimit as tl:
