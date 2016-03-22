@@ -10,6 +10,8 @@ from upp_app.models import TestTaskInSection
 from upp_app.models import UserClosedTasks
 from upp_app.models import UserRatingInSection
 from upp_app.models import RatingHistory
+from upp_app.models import TaskRatingHistory
+from upp_app.models import TestTaskRatingHistory
 
 admin.site.register(Task)
 admin.site.register(Section)
@@ -22,3 +24,5 @@ admin.site.register(TestTaskInSection)
 admin.site.register(UserClosedTasks)
 admin.site.register(UserRatingInSection)
 admin.site.register(RatingHistory)
+admin.site.register(TaskRatingHistory)
+admin.site.register(TestTaskRatingHistory)

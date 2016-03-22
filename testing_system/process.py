@@ -107,7 +107,7 @@ def process(base_path):
     iteration_number = 0
     while True:
         iteration_number += 1
-        #print('iteration =', iteration_number)
+        print('iteration =', iteration_number)
 
         connection = sqlite3.connect(get_data_base_path(base_path))
         connection.row_factory = sqlite3.Row

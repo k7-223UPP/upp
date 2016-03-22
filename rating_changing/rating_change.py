@@ -9,7 +9,7 @@ django.setup()
 import django.core.handlers.wsgi
 from datetime import timedelta, datetime
 application = django.core.handlers.wsgi.WSGIHandler()
-from upp_app.models import UserRatingInSection, TaskInSection, Submission, Task, Section, RatingHistory
+from upp_app.models import UserRatingInSection, TaskInSection, Submission, Task, Section, RatingHistory, TaskRatingHistory, TestTaskRatingHistory
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
@@ -27,7 +27,7 @@ def update_ratings(id_user, id_section, id_task, is_success):
     old_task_rating = task_in_section.rating
     submission_count = get_submission_count(user, task, section)
     user_factor = factor(old_user_rating, get_user_time_diff(user))
-    task_factor = factor(old_task_rating, get_task_time_diff())
+    task_factor = factor(old_task_rating, get_task_time_diff(task))
     user_exp_sc = user_expected_score(old_user_rating, old_task_rating)
     task_exp_sc = task_expected_score(old_user_rating, old_task_rating)
     if is_success:
@@ -42,7 +42,9 @@ def update_ratings(id_user, id_section, id_task, is_success):
     user_rating_in_section.save()
     task_in_section.rating = new_task_rating
     task_in_section.save()
+    TaskRatingHistory(id_task=task,id_section=section, rating=new_task_rating).save()
     RatingHistory(id_user=user, id_section=section, rating=new_user_rating).save()
+
 
 def get_old_user_rating(id_user, id_section):
     user_rating_in_section = get_object_or_404(UserRatingInSection, id_user=id_user, id_section=id_section)
@@ -62,8 +64,12 @@ def get_user_time_diff(id_user):
     return time_delta.days
 
 #это заглушка, поменять на обращение к БД
-def get_task_time_diff():
-    return 1
+def get_task_time_diff(id_task):
+    last_task_rating_changing_date = TaskRatingHistory.objects.all().filter(id_task=id_task).order_by('-date_of_change')[0].date_of_change
+    last_task_rating_changing_date = last_task_rating_changing_date.replace(tzinfo=None)
+    now = datetime.now()
+    time_delta = now - last_task_rating_changing_date
+    return time_delta.days
 
 def get_submission_count(id_user, id_task, id_section):
     sumbissions = Submission.objects.all().filter(id_section=id_section, id_user=id_user, id_task=id_task)

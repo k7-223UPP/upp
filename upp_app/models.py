@@ -86,3 +86,21 @@ class RatingHistory(models.Model):
 
     def __str__(self):
         return 'user=' + str(self.id_user) + '; section=' + str(self.id_section) + '; date=' + str(self.date_of_change) + '; rating=' + str(self.rating)
+
+class TaskRatingHistory(models.Model):
+    id_task = models.ForeignKey(Task)
+    id_section = models.ForeignKey(Section)
+    date_of_change = models.DateTimeField(auto_now_add = True)
+    rating = models.IntegerField()
+
+    def __str__(self):
+        return 'user=' + str(self.id_task) + '; section=' + str(self.id_section) + '; date=' + str(self.date_of_change) + '; rating=' + str(self.rating)
+
+class TestTaskRatingHistory(models.Model):
+    id_test_task = models.ForeignKey(TestTask)
+    id_section = models.ForeignKey(Section)
+    date_of_change = models.DateTimeField(auto_now_add = True)
+    rating = models.IntegerField()
+
+    def __str__(self):
+        return 'user=' + str(self.id_test_task) + '; section=' + str(self.id_section) + '; date=' + str(self.date_of_change) + '; rating=' + str(self.rating)
