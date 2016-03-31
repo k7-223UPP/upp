@@ -37,13 +37,11 @@ def task_page(request, id_section, id_task):
         for i in id_task:
             task = get_object_or_404(Task, id=i)
             tasks[task_library.task_reader.get_task_html(task.id)] = task_library.task_reader.get_tutorial_html(task.id)
+            id_section_obj  = get_object_or_404(Section, id=id_section)
             try:
-                task_in_section = get_object_or_404(TaskInSection, id_task=task, id_section= id_section)
+                task_in_section = get_object_or_404(TaskInSection, id_task=task, id_section= id_section_obj)
             except:
                 None
-            if task_in_section is None or task_in_section.rating == 0:
-                task_rating = 1000
-                TaskInSection(id_task = task, id_section = id_section, rating=task_rating).save()
             else:
                 task_rating = task_in_section.rating
             context['task_rating'] = task_rating

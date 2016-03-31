@@ -46,7 +46,7 @@
             {{ form.docfile }}
 
         </div>
-        <input type="submit" value="Upload" class="btn btn-primary" />
+        <input type="submit" value="Загрузить" class="btn btn-primary" />
         </form>
         <br>
     <h3>Обучающий материал:</h3>
@@ -57,7 +57,7 @@
             <div>
                 <form action ="{% url 'task_page_close' section.id task_id %}" align="center" method="post">
                     {% csrf_token %}
-                    <input class="btn btn-default" type="submit" value="Surrender">
+                    <input class="btn btn-default" type="submit" value="Сдаться">
                 </form>
             </div>
         {% endif %}
