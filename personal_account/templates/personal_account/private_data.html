@@ -6,16 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <link rel="import" href="private_data.html">
-    <h1>Личный кабинет пользователя {{ user.username }}</h1>
-    <nav class="navbar col-md-8 col-md-offset-2 " style="background-color: #f7e1b5;">
-        <div id="navbar" class="collapse navbar-collapse" align="center">
-            <a href="{% url 'private_data' %}" class="btn active">Личные данные</a>
-            <a href="{% url 'submissions' %}" class="btn">Мои посылки</a>
-            <a href="{% url 'process' %}" class="btn">Yet to come</a>
-            <a href="{% url 'process' %}" class="btn">Yet to come</a>
-        </div>
-    </nav>
+    {% include 'personal_account/account_menu.html' %}
     <div class="account-container">
     </div>
     <br>

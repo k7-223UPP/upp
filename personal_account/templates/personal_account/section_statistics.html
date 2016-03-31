@@ -1,0 +1,17 @@
+{% extends 'menu/base.html' %}
+
+{% load staticfiles %}
+{% block title %}
+Личные данные
+{% endblock %}
+
+{% block content %}
+    {% include 'personal_account/account_menu.html' %}
+    {% if no_rating_in_section %}
+        <div class=" col-md-8 col-sm-8">
+            <h1>У вас нет рейтинга в этом разделе</h1>
+        </div>
+    {% else %}
+        {% include 'personal_account/statistics.html' %}
+    {% endif %}
+ {% endblock %}

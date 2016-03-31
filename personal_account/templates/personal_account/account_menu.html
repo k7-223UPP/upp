@@ -1,0 +1,21 @@
+{% block content %}
+<h1>Личный кабинет пользователя {{ user.username }}</h1>
+    <nav class="navbar col-md-8 col-md-offset-2 " style="background-color: #f7e1b5;">
+        <div id="navbar" class="collapse navbar-collapse" align="center">
+            <a href="{% url 'private_data' %}" class="{{ private_data_class }}">Личные данные</a>
+            <a href="{% url 'submissions' %}" class="{{ submissions_class }}">Мои посылки</a>
+            <a href="{% url 'general_statistics' %}" class="{{ general_statistics_class }}">Статистика</a>
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">Статистика по разделу
+                <span class="caret"></span></button>
+                <ul id="section_menu" class="dropdown-menu">
+                    {% for section in sections %}
+                        <li><a href="{% url 'section_statistics' section.id %}">{{ section.name }}</a></li>
+                    {% empty %}
+                        <a href="#">retard</a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
