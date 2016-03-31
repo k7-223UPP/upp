@@ -46,7 +46,8 @@ INSTALLED_APPS = (
     'section_list',
     'section_page',
     'task_page',
-    'rating_changing'
+    'rating_changing',
+    'googlecharts'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -111,3 +112,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+

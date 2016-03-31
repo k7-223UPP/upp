@@ -1,0 +1,12 @@
+{% extends 'menu/base.html' %}
+
+{% load staticfiles %}
+{% block title %}
+Общая статистика
+{% endblock %}
+
+{% block content %}
+    {% include 'personal_account/account_menu.html' %}
+    {% include 'personal_account/statistics.html' %}
+ {% endblock %}
+</html>
